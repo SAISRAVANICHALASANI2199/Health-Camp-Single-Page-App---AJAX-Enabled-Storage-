@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Camp SPA - Health Vitals</title>
+</head>
+
+<body>
+    <div style="width: 100%;height: 25px; background-color: darkblue;color: white; height: 30px;">
+        <a href="index.html" style="color: white;text-decoration: none;">
+            Health Camp Spa
+        </a>
+       
+        <div style="float: right;">
+            <a href="index.html">
+                <button class="nav-btn">Demographics</button>
+            </a>
+            <a href="healthvitals.html">
+                <button class="nav-btn">Health Vitals</button>
+            </a>
+            <a href="reports.html">
+                <button class="nav-btn">Reports</button>
+            </a>
+        </div>
+    </div>
+    <div>
+    <div style="width: 50%; float: left; border-right: 10px;border-right-style: solid;border-color: aqua">
+            <table>
+                <tr>
+                    <td>
+                        Height :
+                    </td>
+                    <td>
+                        <input type="text" name="height" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Weight :
+                    </td>
+                    <td>
+                        <input type="text" name="weight" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Body Temperature :
+                    </td>
+                    <td>
+                        <input type="text" name="temperature" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Pulse Rate :
+                    </td>
+                    <td>
+                        <input type="text" name="pulse" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        BP :
+                    </td>
+                    <td>
+                        <input type="text" name="bp" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <button class="btn btn-success" onclick="savedetails()">Submit</button>
+                     </td>
+                </tr>
+            </table>
+    </div>
+    <div style="width: 50%; float: right;">
+            <table>
+                <tr>
+                    <td>
+                        Medications :
+                    </td>
+                    <td>
+                        <textarea name="medications" rows="2" cols="50">
+                           </textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Notes :
+                    </td>
+                    <td>
+                        <textarea  name="notes" rows="2" cols="50"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Covid-19 vaccincation(optional) :
+                    </td>
+                    <td>
+                       <input type="file" name="vaccinephoto" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                       <button class="btn btn-success" onclick="savemedications()">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>
+<!-- CSS only -->
+<script>
+    
+ function getuserid(){
+    return localStorage.getItem("userid");
+ }
+    function savedetails() {
+
+        var userid  = getuserid();
+        console.log(`userid is ${userid}`);
+        if(!userid){
+            alert('Please fill demographic details first');
+            window.location.href = "index.html";
+        }
+fetch("http://localhost:3000/saveHealthVitals", {
+     
+    // Adding method type
+    method: "POST",
+    // Adding body or contents to send
+    body: JSON.stringify({
+        height: document.getElementsByName("height")[0].value,
+        weight: document.getElementsByName("weight")[0].value,
+        temp: document.getElementsByName("temperature")[0].value,
+        pulse: document.getElementsByName("pulse")[0].value,
+        bp:document.getElementsByName("bp")[0].value,
+        id: userid
+    }),
+     
+    // Adding headers to the request
+    headers: {
+        "Content-type": "application/json; charset=UTF-8"
+    }
+})
+ 
+// Converting to JSON
+.then(response => response.json())
+ 
+// Displaying results to console
+.then(json => console.log(json));
+    }
+     
+    function savemedications() {
+        var userid  = getuserid();
+        if(!userid){
+            alert('Please fill demographic details first');
+            window.location.href = "index.html";
+        }
+        var filepath = document.getElementsByName('vaccinephoto')[0].value;
+        var filename = ''
+if (filepath) {
+    var startIndex = (filepath.indexOf('\\') >= 0 ? filepath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+    filename = filepath.substring(startIndex);
+    if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+        filename = filename.substring(1);
+    }
+}
+console.log('here')
+fetch("http://localhost:3000/saveMedication", {
+
+// Adding method type
+method: "POST",
+// Adding body or contents to send
+body: JSON.stringify({
+    medication: document.getElementsByName("medications")[0].value,
+    notes: document.getElementsByName("notes")[0].value,
+    vaccinephoto: filename,
+    id: "1"
+}),
+
+// Adding headers to the request
+headers: {
+  "Content-type": "application/json; charset=UTF-8"
+}
+})
+
+// Converting to JSON
+.then(response => response.json())
+
+// Displaying results to console
+.then(json => console.log(json));
+}
+</script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Camp SPA - Reports</title>
+</head>
+
+<body>
+  <div style="width: 100%;height: 25px; background-color: darkblue;color: white; height: 30px;">
+    <a href="index.html" style="color: white;text-decoration: none;">
+      Health Camp Spa
+    </a>
+    <div style="float: right;">
+      <a href="index.html">
+        <button class="nav-btn">Demographics</button>
+      </a>
+      <a href="healthvitals.html">
+        <button class="nav-btn">Health Vitals</button>
+      </a>
+      <a href="reports.html">
+        <button class="nav-btn">Reports</button>
+      </a>
+    </div>
+  </div>
+  <div>
+    <br>
+    <div style="width: 100%; float: left;">
+      <div style="width: 100%;height: 25px;height: 30px;background-color: red;">
+        Patient Details
+      </div>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Medications</th>
+            <th scope="col">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="data">
+          <!-- <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+    <div>
+      Convid - 19 vaccincation :
+    </div>
+  </div>
+</body>
+
+</html>
+<!-- CSS only -->
+<script>
+  function getreports() {
+    fetch("http://localhost:3000/getreports").then(
+      res => {
+        res.json().then(
+          data => {
+            if (data.data.length > 0) {
+              var temp = "";
+              data.data.forEach((itemData) => {
+                temp += "<tr>";
+                temp += "<td>" + itemData.firstname + ' '  + itemData.lastname + "</td>";
+                temp += "<td>" + itemData.age + "</td>";
+                temp += "<td>" + itemData.gender + "</td>";
+                temp += `<td> <img src = ${itemData.pic} alt="No Image" height="50px" widht="50px"/></td>`;
+                temp += "<td>" + itemData.medication + "</td>";
+                temp += "<td>" + itemData.notes + "</td></tr>";
+              });
+              document.getElementById('data').innerHTML = temp;
+            }
+          }
+        )
+      }
+    )
+  }
+  getreports();
+</script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Camp SPA</title>
+</head>
+
+<body>
+    <div style="width: 100%;height: 25px; background-color: darkblue;color: white; height: 30px;">
+        <a href="index.html" style="color: white;text-decoration: none;">
+            Health Camp Spa
+        </a>
+        <div style="float: right;">
+            <a href="index.html">
+                <button class="nav-btn">Demographics</button>
+            </a>
+            <a href="healthvitals.html">
+                <button class="nav-btn">Health Vitals</button>
+            </a>
+            <a href="reports.html">
+                <button class="nav-btn">Reports</button>
+            </a>
+        </div>
+    </div>
+    <div>
+        <div style="width: 50%; float: left; border-right: 10px;border-right-style: solid;border-color: aqua">
+            <table>
+                <tr>
+                    <td>
+                        First Name :
+                    </td>
+                    <td>
+                        <input type="text" name="fname" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Last Name :
+                    </td>
+                    <td>
+                        <input type="text" name="lname" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Gender :
+                    </td>
+                    <td>
+                        <select name="gender">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Age :
+                    </td>
+                    <td>
+                        <input type="text" name="age" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Notes or Other details :
+                    </td>
+                    <td>
+                        <input type="text" name="details" />
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <button class="btn btn-success" onclick="savedetails()">Submit</button>
+                    </td>
+                </tr>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 50%; float: right;">
+            <form>
+                <table>
+                    <tr>
+                        <td>
+                            Photo :
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            <button class="btn btn-success">Submit</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+<!-- CSS only -->
+
+<script>
+    function savedetails() {
+      console.log('here')
+fetch("http://localhost:3000/savedetails", {
+     
+    // Adding method type
+    method: "POST",
+    // Adding body or contents to send
+    body: JSON.stringify({
+        firstname: document.getElementsByName("fname")[0].value,
+        lastname: document.getElementsByName("lname")[0].value,
+        gender: document.getElementsByName("gender")[0].value,
+        age: document.getElementsByName("age")[0].value,
+        notes:document.getElementsByName("details")[0].value
+    }),
+     
+    // Adding headers to the request
+    headers: {
+        "Content-type": "application/json; charset=UTF-8"
+    }
+})
+ 
+// Converting to JSON
+.then(response => response.json())
+ 
+// Displaying results to console
+.then(json => window.localStorage.setItem('userid', json.data));
+    }
+</script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
